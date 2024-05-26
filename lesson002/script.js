@@ -592,14 +592,14 @@ class ThreeApp {
           case "strong":
             // クリックされたボタンが「強」の場合
             // 羽根の回転速度を上げる
-            this.bladeRotationSpeed = 0.75;
+            this.bladeRotationSpeed = 0.5;
             event.target.classList.add("is-active");
             this.isOn = true;
             break;
           case "medium":
             // クリックされたボタンが「中」の場合
             // 羽根の回転速度を中にする
-            this.bladeRotationSpeed = 0.4;
+            this.bladeRotationSpeed = 0.35;
             event.target.classList.add("is-active");
             this.isOn = true;
             break;
