@@ -398,7 +398,10 @@ class ThreeApp {
     // ------------------------------------
 
     // 飛行機雲のメッシュを生成
-    const cloud = new THREE.Mesh(this.sphereGeometry2, this.cloudsMaterial.clone()); // マテリアルはクローンで作成（opacityが更新されてしまうため）
+    const cloud = new THREE.Mesh(
+      this.sphereGeometry2,
+      this.cloudsMaterial.clone()
+    ); // マテリアルはクローンで作成（opacityが更新されてしまうため）
 
     // 飛行機雲の位置調整
     const cloudVec = direction.clone().normalize().multiplyScalar(2.25);
@@ -406,7 +409,6 @@ class ThreeApp {
       currentPos.x + cloudVec.x + (Math.random() * 2 - 1) * 0.15;
     cloud.position.y = currentPos.y + cloudVec.y + Math.random() * 0.25;
     cloud.position.z = currentPos.z + cloudVec.z + Math.random() * 0.25;
-
 
     // 飛行機雲のサイズをランダムに設定
     const scale = Math.random() * 0.65 + 0.25;

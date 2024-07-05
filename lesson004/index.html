@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="script.js" type="module"></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    ></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        overflow: hidden;
+        position: relative;
+        box-sizing: border-box;
+      }
+      .info {
+        --inset: 100%;
+        animation: changeHue 7.5s infinite alternate;
+
+        position: absolute;
+        overflow-y: auto;
+        background: rgb(255 255 255 / 0.1);
+        backdrop-filter: hue-rotate(0deg);
+        z-index: 1;
+        width: 100%;
+        inset: 0;
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      .info_inner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        padding: 40px;
+      }
+
+      .info_right {
+        width: 40%;
+        flex-shrink: 0;
+        aspect-ratio: 1 / 1;
+      }
+
+      .info_wipe-wrapper {
+        width: 100%;
+        height: 100%;
+        clip-path: inset(var(--inset) 0 0 0);
+      }
+
+      .info_wipe {
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+      }
+
+      .info_wipe canvas {
+        width: 100%;
+      }
+
+      .info_left {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .info_title {
+        display: inline-block;
+        padding: 16px;
+        font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+        font-weight: 700;
+        text-align: center;
+        position: relative;
+        letter-spacing: 0.1em;
+        color: #fff;
+        text-shadow: 10px 10px 15px rgb(155 250 255 / 0.5),
+          -10px -10px 15px rgb(155 250 255 / 0.5),
+          10px -10px 15px rgb(155 250 255 / 0.5),
+          -10px 10px 15px rgb(155 250 255 / 0.5);
+
+        clip-path: inset(var(--inset) 0 0 0);
+      }
+
+      .info_description {
+        display: block;
+        margin-block-start: 32px;
+        padding: 24px;
+        background: rgb(255 255 255 / 0.7);
+        font-size: clamp(1rem, 1vw + 0.5rem, 1.25rem);
+        line-height: 1.5;
+        border-radius: 12px;
+        font-weight: 500;
+
+        clip-path: inset(var(--inset) 0 0 0);
+      }
+
+      .info_btn {
+        margin-block-start: 15px;
+        margin-inline: auto;
+        width: 320px;
+        clip-path: inset(var(--inset) 0 0 0);
+        padding: 25px;
+      }
+
+      .info_btn button {
+        width: 100%;
+        background-image: linear-gradient(
+          180deg,
+          rgb(12, 16, 130) 8%,
+          rgb(1, 7, 62) 80%
+        );
+
+        color: #fff;
+        text-align: center;
+        padding: 16px;
+        font-size: 1.25rem;
+        border-radius: 6px;
+        letter-spacing: 0.5em;
+        outline: none;
+        border: none;
+      }
+      .info_btn button:hover {
+        background-image: linear-gradient(
+          0deg,
+          rgb(12, 16, 130) 8%,
+          rgb(1, 7, 62) 80%
+        );
+        box-shadow: 7px 7px 10px 6px rgb(155 250 255 / 0.15),
+          -7px -7px 10px 6px rgb(155 250 255 / 0.15),
+          7px -7px 10px 6px rgb(155 250 255 / 0.15),
+          -7px 7px 10px 6px rgb(155 250 255 / 0.15);
+      }
+
+      @keyframes changeHue {
+        0% {
+          backdrop-filter: hue-rotate(0deg);
+        }
+        100% {
+          backdrop-filter: hue-rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main"></div>
+
+    <article class="info">
+      <div class="info_inner">
+        <div class="info_right">
+          <div class="info_wipe-wrapper">
+            <div class="info_wipe" id="wipe"></div>
+          </div>
+          <!-- /.info_wipe-wrapper -->
+        </div>
+        <!-- /.info_right -->
+        <div class="info_left">
+          <h1 class="info_title"></h1>
+          <p class="info_description">
+            説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。説明文が入ります。
+          </p>
+          <div class="info_btn">
+            <button type="button" id="back">戻る</button>
+          </div>
+          <!-- /.info_btn -->
+        </div>
+        <!-- / .info_left -->
+      </div>
+      <!-- /.info_inner -->
+    </article>
+    <!-- /.info -->
+  </body>
+</html>
