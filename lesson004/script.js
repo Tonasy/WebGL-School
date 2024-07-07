@@ -238,45 +238,45 @@ class ThreeApp {
     let wheelSpeed = 0;
 
     // スクロールイベントの定義
-    // window.addEventListener(
-    //   "wheel",
-    //   (event) => {
-    //     // クリック動作中はスクロールイベントを無効化
-    //     if (this.clickedObject) return;
+    window.addEventListener(
+      "wheel",
+      (event) => {
+        // クリック動作中はスクロールイベントを無効化
+        if (this.clickedObject) return;
 
-    //     // ホイール量を取得
-    //     const delta = event.deltaY;
+        // ホイール量を取得
+        const delta = event.deltaY;
 
-    //     // ホイール速度を計算
-    //     const currentTime = new Date().getTime();
-    //     const deltaTime = currentTime - lastWheelTimestamp;
-    //     lastWheelTimestamp = currentTime;
-    //     wheelSpeed = Math.abs(delta) / (deltaTime || 1); // ホイール量の絶対値を差分時間で割る
+        // ホイール速度を計算
+        const currentTime = new Date().getTime();
+        const deltaTime = currentTime - lastWheelTimestamp;
+        lastWheelTimestamp = currentTime;
+        wheelSpeed = Math.abs(delta) / (deltaTime || 1); // ホイール量の絶対値を差分時間で割る
 
-    //     // レイキャスターを使って交差判定を行う
-    //     const raycaster = initRaycaster(event);
-    //     const intersects = raycaster[0];
+        // レイキャスターを使って交差判定を行う
+        const raycaster = initRaycaster(event);
+        const intersects = raycaster[0];
 
-    //     if (intersects.length > 0) {
-    //       // 交差した対象を取得
-    //       const intersectedObject = intersects[0].object;
+        if (intersects.length > 0) {
+          // 交差した対象を取得
+          const intersectedObject = intersects[0].object;
 
-    //       // 交差した対象の含まれるグループを取得
-    //       const intersectedGroup = intersectedObject.parent.parent;
+          // 交差した対象の含まれるグループを取得
+          const intersectedGroup = intersectedObject.parent.parent;
 
-    //       // グループを回転させる
-    //       if (intersectedGroup) {
-    //         // ホイール速度を考慮
-    //         const speed = wheelSpeed * wheelSensitivity;
-    //         // スクロール情報を更新
-    //         this.inertiaState.isScrolling = true;
-    //         this.inertiaState.velocity = delta * speed;
-    //         this.inertiaState.targetGroup = intersectedGroup;
-    //       }
-    //     }
-    //   },
-    //   false
-    // );
+          // グループを回転させる
+          if (intersectedGroup) {
+            // ホイール速度を考慮
+            const speed = wheelSpeed * wheelSensitivity;
+            // スクロール情報を更新
+            this.inertiaState.isScrolling = true;
+            this.inertiaState.velocity = delta * speed;
+            this.inertiaState.targetGroup = intersectedGroup;
+          }
+        }
+      },
+      false
+    );
 
     // ホバー時のイベントを定義
 
@@ -428,27 +428,30 @@ class ThreeApp {
           },
         });
 
-        // オブジェクトを回転
+        // オブジェクトを回転(ホイール回転分を考慮)
+        const rot = intersectedWrap.rotation.y % (Math.PI * 2);
+
         tl.to(
           this.clickedObject.rotation,
           {
             x: 0,
-            y: Math.PI * 2,
+            y: Math.PI * 2 - rot,
             z: Math.PI * 2,
             duration: 2.0,
           },
           "rotation"
         );
 
-        // オブジェクトの位置を変更
+        // オブジェクトの位置を変更（ホイール回転分を考慮）
+        // const newX = this.clickedObject.position.x * Math.cos(rot) - this.clickedObject.position.z * Math.sin(rot);
+        // const newZ = this.clickedObject.position.x * Math.sin(rot) + this.clickedObject.position.z * Math.cos(rot);
         tl.to(
           this.clickedObject.position,
           {
             x: 0.0,
             y: 2.0,
-            z: -1.25,
+            z: 0.0,
             duration: 2.25,
-            onComplete: () => {},
           },
           "rotation"
         );
@@ -466,10 +469,16 @@ class ThreeApp {
 
         // カメラの向きを変更
         tl.to(
-          {},
+          this.mainCamera.position,
           {
+            x: 0.0,
+            y: 1.5,
+            z: 1.25,
             duration: 2.5,
             onUpdate: () => {
+              // カメラの位置を変更
+              // this.mainCamera.position.set(0.0, 1.5, 1.25);
+
               // 現在のカメラの向きから目標の向きへ線形補間
               const currentLookAt = new THREE.Vector3();
               this.mainCamera.getWorldDirection(currentLookAt);
@@ -573,6 +582,16 @@ class ThreeApp {
             x: 1.0,
             y: 1.0,
             duration: 0.5,
+          },
+          "rotation"
+        )
+        .to(
+          this.mainCamera.position,
+          {
+            x: 0.0,
+            y: 1.5,
+            z: 0.0,
+            duration: 1.0,
           },
           "rotation"
         );
@@ -955,7 +974,7 @@ class ThreeApp {
     // 軸ヘルパー
     const axesBarLength = 25.0;
     this.axesHelper = new THREE.AxesHelper(axesBarLength);
-    this.mainScene.add(this.axesHelper);
+    // this.mainScene.add(this.axesHelper);
 
     // コントロール
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
