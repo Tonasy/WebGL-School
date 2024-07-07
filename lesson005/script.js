@@ -113,18 +113,36 @@ class App {
   setupGeometry() {
     // 五角形の各座標を求める
     const baseRadian = (Math.PI * 2) / 5; // 五角形の角度
-    const initialRadian = Math.PI / 180 * 18; // 初期角度
-    const radius = 0.5; // 半径
+    const initialRadian = (Math.PI / 180) * (18 + 180); // 初期角度
+    const innerRadius = 0.25; // 内側の半径
+    const outerRadius =
+      (innerRadius * Math.sin((Math.PI * 126) / 180)) /
+      Math.sin((Math.PI * 18) / 180);
     this.position = [];
     for (let i = 0; i < 5; i++) {
+      // 内側の五角形をなす三角形用
       for (let j = 0; j < 3; j++) {
         if (j == 0 || j == 1) {
           const radian = initialRadian + baseRadian * (i + j);
-          const x = radius * Math.cos(radian);
-          const y = radius * Math.sin(radian);
+          const x = innerRadius * Math.cos(radian);
+          const y = innerRadius * Math.sin(radian);
           this.position.push(x, y, 0.0);
         } else {
           this.position.push(0.0, 0.0, 0.0);
+        }
+      }
+      // 外側の三角形用
+      for (let j = 0; j < 3; j++) {
+        if (j == 0 || j == 1) {
+          const radian = initialRadian + baseRadian * (i + j);
+          const x = innerRadius * Math.cos(radian);
+          const y = innerRadius * Math.sin(radian);
+          this.position.push(x, y, 0.0);
+        } else {
+          const radian = initialRadian + (Math.PI * 36) / 180 + baseRadian * i;
+          const x = outerRadius * Math.cos(radian);
+          const y = outerRadius * Math.sin(radian);
+          this.position.push(x, y, 0.0);
         }
       }
     }
@@ -135,19 +153,44 @@ class App {
 
     // 頂点の色の定義
     this.color = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 3; j++) {
         let r, g, b, a;
-        if (j == 0 || j == 1) {
-          r = 0.0;
-          g = 0.0;
+        if (j == 0) {
+          r = 0.25;
+          g = 0.75;
           b = 1.0;
           a = 0.75;
+        } else if (j == 1) {
+          r = 1.0;
+          g = 1.0;
+          b = 0.0;
+          a = 0.75;
+        } else {
+          r = 0.6;
+          g = 0.6;
+          b = 1.0;
+          a = 0.85;
+        }
+        this.color.push(r, g, b, a);
+      }
+      for (let j = 0; j < 3; j++) {
+        let r, g, b, a;
+        if (j == 0) {
+          r = 0.2;
+          g = 0.7;
+          b = 1.0;
+          a = 0.75;
+        } else if (j == 1) {
+          r = 1.0;
+          g = 1.0;
+          b = 0.0;
+          a = 0.7;
         } else {
           r = 1.0;
           g = 1.0;
           b = 0.0;
-          a = 1.0;
+          a = 0.75;
         }
         this.color.push(r, g, b, a);
       }
@@ -236,7 +279,7 @@ class App {
     this.setupRendering();
 
     // 現在までの経過時間を計算し、秒単位に変換する
-    const nowTime = (Date.now() - this.startTime) * 0.001;
+    const nowTime = (Date.now() - this.startTime) * 0.0015;
 
     // プログラムオブジェクトを選択
     gl.useProgram(this.program);
