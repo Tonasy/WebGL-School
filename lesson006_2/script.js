@@ -217,7 +217,6 @@ class App {
     this.uniformLocation = {
       mvpMatrix: gl.getUniformLocation(this.program, "mvpMatrix"),
       modelMatrix: gl.getUniformLocation(this.program, "modelMatrix"),
-      invMatrix: gl.getUniformLocation(this.program, "invMatrix"),
       normalMatrix: gl.getUniformLocation(this.program, "normalMatrix"),
       lightPosition: gl.getUniformLocation(this.program, "lightPosition"),
       lightColor: gl.getUniformLocation(this.program, "lightColor"),
@@ -308,7 +307,6 @@ class App {
     gl.useProgram(this.program);
     gl.uniformMatrix4fv(this.uniformLocation.mvpMatrix, false, mvp);
     gl.uniformMatrix4fv(this.uniformLocation.modelMatrix, false, m);
-    gl.uniformMatrix4fv(this.uniformLocation.invMatrix, false, invMatrix);
     gl.uniformMatrix4fv(this.uniformLocation.normalMatrix, false, normalMatrix);
     gl.uniform3fv(this.uniformLocation.lightPosition, [2.0, 1.5, 0.0]);
     gl.uniform3fv(this.uniformLocation.lightColor, [0.5, 0.5, 0.85]);
