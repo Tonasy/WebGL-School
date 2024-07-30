@@ -1,13 +1,13 @@
 precision mediump float;
 
 uniform vec3 ambient;
-uniform vec3 eyeDirection;
 uniform vec3 lightColor;
 
 varying vec3 vNormal;
 varying vec3 vLightVec;
 varying float vLightLength;
 varying vec4 vColor;
+varying vec3 vEyeVec;
 
 void main() {
 
@@ -21,7 +21,7 @@ void main() {
   vec3 lightEffect = lightColor * diffuse * attenuation;
 
   // 反射光
-  vec3 halfVec = normalize(vLightVec) + normalize(eyeDirection);
+  vec3 halfVec = normalize(vLightVec) + normalize(vEyeVec);
   float specular = pow(clamp(dot(normalize(vNormal), normalize(halfVec)), 0.0, 1.0), 200.0);
 
   // 最終的な色を計算

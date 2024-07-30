@@ -221,7 +221,7 @@ class App {
       lightPosition: gl.getUniformLocation(this.program, "lightPosition"),
       lightColor: gl.getUniformLocation(this.program, "lightColor"),
       ambient: gl.getUniformLocation(this.program, "ambient"),
-      eyeDirection: gl.getUniformLocation(this.program, "eyeDirection"),
+      eyePosition: gl.getUniformLocation(this.program, "eyePosition"),
     };
   }
 
@@ -301,7 +301,7 @@ class App {
     const normalMatrix = Mat4.transpose(invMatrix);
 
     // 視点情報を取得
-    const eyeDirection = this.camera.position;
+    const eyePosition = this.camera.position;
 
     // プログラムオブジェクトを選択し uniform 変数を更新する
     gl.useProgram(this.program);
@@ -311,7 +311,7 @@ class App {
     gl.uniform3fv(this.uniformLocation.lightPosition, [2.0, 1.5, 0.0]);
     gl.uniform3fv(this.uniformLocation.lightColor, [0.5, 0.5, 0.85]);
     gl.uniform3fv(this.uniformLocation.ambient, [0.15, 0.15, 0.15]);
-    gl.uniform3fv(this.uniformLocation.eyeDirection, eyeDirection);
+    gl.uniform3fv(this.uniformLocation.eyePosition, eyePosition);
 
     // VBO と IBO を設定し、描画する
     WebGLUtility.enableBuffer(
